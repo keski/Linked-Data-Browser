@@ -1,0 +1,134 @@
+:root {
+  --main-text-color: #49274A;
+
+  --main-bg-color: white;
+  --main-border-color: #F8EEE7;
+  --main-text-color: #7A417C;
+
+  --link-main-color: #94618E;
+  --link-visited-color: #94618E;
+  --link-hover-color: #94618E;
+
+  --table-even-color: #E9DFE8;
+  --table-odd-color: white;
+  --table-border-color: #F8EEE7;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+  padding: 5px;
+  font-family: "Helvetica Neue", Arial,sans-serif;
+  font-weight: 300;
+  line-height: 1.1;
+  background-color: var(--main-bg-color);
+  color: var(--main-text-color);
+}
+
+h1, h2, h3 {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-weight: 200;
+  line-height: 1.1;
+}
+
+main {
+  height: 100%;
+  padding: 10px;
+  border: 1px solid var(--main-border-color);
+  border-radius: 5px;
+}
+
+#target img {
+  max-width: 300px;
+  max-height: 300px;
+  display: block;
+}
+
+#target a img {
+  display: inline;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 3em;
+}
+
+.logo a {
+  color: var(--main-text-color);
+}
+
+.logo a, .logo a:visited, .logo a:hover {
+  color: var(--main-text-color);
+  text-decoration: none;
+}
+
+.logo img {
+  width: 100px;
+}
+
+a {
+  color: var(--link-main-color);
+  text-decoration: none;
+}
+
+a:visited {
+  color: var(--link-visited-color);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--link-hover-color);
+  text-decoration: underline;
+}
+
+table {
+  width: 100%;
+  border: 1px solid var(--table-border-color);
+  border-collapse: collapse;
+  border-left: none;
+  border-right: none;
+}
+
+img.external-link {
+  height: 1em;
+  padding-left: 5px;
+  vertical-align: middle;
+  display: inline-block;
+  content: url('/static/images/local-link-icon.png');
+}
+
+th, td {
+  text-align: left;
+  padding: 10px;
+}
+
+table a {
+  word-break: break-all;
+}
+
+table a:hover {
+  color: var(--link-hover-color);
+  text-decoration: underline;
+}
+
+table tr {
+  background-color: var(--table-odd-color);
+}
+
+table tr:nth-child(2n){
+  background-color: var(--table-even-color);
+}
+
+td img {
+  max-width: 200px;
+  max-height: 200px;
+  display: block;
+}
