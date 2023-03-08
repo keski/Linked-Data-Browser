@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Linked Data Browser</title>
+    <link rel="icon" href="/static/images/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <main>
+        <header>
+            <h1 class="logo">
+                <img src="/static/images/logo-color.png">
+                <a href="/page">Linked Data Browser</a>
+            </h1>
+        </header>
+        <h1 id="target">{{{ format @root.table url }}}</h1>
+
+        {{#if (not (or subject (or object property))) }}
+        <div class="error-404">404</div>
+        {{/if}}
+        
+        {{#if (or subject object)}}
+        <table>
+            <tr>
+                <th>Property</th>
+                <th>Value</th>
+            </tr>
+
+            <!-- 404 -->
+
+            <!-- resource is subject -->
+            {{#each subject}}
+                {{setVar "property" @key}}
+                {{#each this}}
+                    <tr>
+                        {{#if @root.property}}
+                            <td>{{{ format @root.table @root.property }}}</td>
+                            {{setVar "property" ""}}
+                        {{else}}
+                            <td></td>
+                        {{/if}}
+                        <td>{{{ format @root.table this }}}</td>
+                    </tr>
+                {{/each}}
+            {{/each}}
+
+            <!-- resource is object -->
+            {{#each object}}
+                {{setVar "property" @key}}
+                {{#each this}}
+                    <tr>
+                        {{#if @root.property}}
+                            <td>is {{{ format @root.table @root.property }}} of</td>
+                            {{setVar "property" ""}}
+                        {{else}}
+                            <td></td>
+                        {{/if}}
+                        <td>{{{ format @root.table this }}}</td>
+                    </tr>
+                {{/each}}
+            {{/each}}
+        </table>
+        {{/if}}
+
+        {{#if property}}
+        <table>
+            <tr>
+                <th>Subject</th>
+                <th>Object</th>
+            </tr>
+
+            <!-- resource is subject -->
+            {{#each property}}
+                <tr>
+                    <td>{{{ format @root.table (get this 0) }}}</td>
+                    <td>{{{ format @root.table (get this 1) }}}</td>
+                </tr>
+            {{/each}}
+        </table>
+        {{/if}}
+    </main>
+</body>
