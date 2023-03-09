@@ -4,6 +4,7 @@
     <title>Linked Data Browser</title>
     <link rel="icon" href="/static/images/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/reset.css">
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 
@@ -22,68 +23,73 @@
     <main>
         <h1 id="target">{{{ format @root.table url }}}</h1>
 
-        {{#unless (or subject (or object property)) }}
+        {{#if (and (empty subject) (empty object) (empty property)) }}
         <div class="error-404">404</div>
-        {{/unless}}
+        {{/if}}
 
-        {{#if (or subject object)}}
-        <table>
-            <tr>
-                <th>Property</th>
-                <th>Value</th>
-            </tr>
+        {{#if (not (and (empty subject) (empty object)))}}
+            <table>
+                <tr>
+                    <th>Property</th>
+                    <th>Value</th>
+                </tr>
 
-            <!-- resource is subject -->
-            {{#each (sort subject)}}
-                {{setVar "property" this}}
-                {{#each (sort (get @root.subject this))}}
-                    <tr>
-                        {{#if @root.property}}
-                            <td>{{{ format @root.table @root.property }}}</td>
-                            {{setVar "property" ""}}
-                        {{else}}
-                            <td></td>
-                        {{/if}}
-                        <td>{{{ format @root.table this }}}</td>
-                    </tr>
+                <!-- resource is subject -->
+                {{#each (sort subject)}}
+                    {{setVar "prop" this}}
+                    {{#each (sort (get @root.subject this))}}
+                        <tr>
+                            {{#if @root.prop}}
+                                <td>{{{ format @root.table @root.prop }}}</td>
+                                {{setVar "prop" ""}}
+                            {{else}}
+                                <td></td>
+                            {{/if}}
+                            <td>{{{ format @root.table this }}}</td>
+                        </tr>
+                    {{/each}}
                 {{/each}}
-            {{/each}}
 
 
 
-            <!-- resource is object -->
-            {{#each (sort object)}}
-                {{setVar "property" this}}
-                {{#each (sort (get @root.object this))}}
-                    <tr>
-                        {{#if @root.property}}
-                            <td>is {{{ format @root.table @root.property }}} of</td>
-                            {{setVar "property" ""}}
-                        {{else}}
-                            <td></td>
-                        {{/if}}
-                        <td>{{{ format @root.table this }}}</td>
-                    </tr>
+                <!-- resource is object -->
+                {{#each (sort object)}}
+                    {{setVar "prop" this}}
+                    {{#each (sort (get @root.object this))}}
+                        <tr>
+                            {{#if @root.prop}}
+                                <td>is {{{ format @root.table @root.prop }}} of</td>
+                                {{setVar "prop" ""}}
+                            {{else}}
+                                <td></td>
+                            {{/if}}
+                            <td>{{{ format @root.table this }}}</td>
+                        </tr>
+                    {{/each}}
                 {{/each}}
-            {{/each}}
-        </table>
+            </table>
         {{/if}}
 
         {{#if property}}
-        <table>
-            <tr>
-                <th>Subject</th>
-                <th>Object</th>
-            </tr>
+            <table>
+                <tr>
+                    <th>Subject</th>
+                    <th>Object</th>
+                </tr>
 
-            <!-- resource is subject -->
-            {{#each property}}
-            <tr>
-                <td>{{{ format @root.table (get this 0) }}}</td>
-                <td>{{{ format @root.table (get this 1) }}}</td>
-            </tr>
-            {{/each}}
-        </table>
+                <!-- resource is subject -->
+                {{#each property}}
+                    <tr>
+                        <td>{{{ format @root.table (get this 0) }}}</td>
+                        <td>{{{ format @root.table (get this 1) }}}</td>
+                    </tr>
+                {{/each}}
+            </table>
         {{/if}}
     </main>
+
+    <footer>
+        <p><b>Linked Data Browser</b> is distributed under the MIT License</p>
+        <p>GitHub: <a href="https://github.com/keski/Linked-Data-Browser">https://github.com/keski/Linked-Data-Browser</a></p>
+    </footer>
 </body>

@@ -46,7 +46,19 @@ function getImage(value) {
 }
 
 /* Handlebar helpers */
-hbs.registerHelper('or', (v1, v2) => Object.keys(v1).length !== 0 || Object.keys(v2).length !== 0);
+hbs.registerHelper('empty', (v) => {
+    if(Array.isArray(v)){
+        return v.length == 0;
+    } else {
+        return Object.keys(v).length == 0;
+    }
+});
+
+hbs.registerHelper('not', (v) => !v);
+
+hbs.registerHelper('and', (v1, v2, v3) => v1 && v2 && v3);
+
+hbs.registerHelper('or', (v1, v2, v3) => v1 || v2 || v3);
 
 hbs.registerHelper('get', (object, index) => object[index]);
 
@@ -138,7 +150,7 @@ async function visit(url, format = 'html') {
 
             // if target is property
             if (p == url) {
-                pushIfNotExists(property, [s, p]);
+                pushIfNotExists(property, [s, o]);
             }
 
             // if target is object

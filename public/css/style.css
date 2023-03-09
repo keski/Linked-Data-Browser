@@ -1,14 +1,12 @@
 :root {
   --main-text-color: #7A417C;
   --main-border-color: #F8EEE7;
-
   --link-main-color: #94618E;
   --link-visited-color: #94618E;
   --link-hover-color: #94618E;
-
   --table-even-color: #E9DFE8;
   --table-odd-color: white;
-  --table-border-color: #F8EEE7;
+  --table-border-color: #CB94C4;
 }
 
 * {
@@ -16,12 +14,13 @@
 }
 
 body {
-  height: 100vh;
+  min-height: 100vh;
   width: 90%;
   max-width: 1200px;
   margin: auto;
-  padding: 5px;
+  padding: 5px 0 50px;
   display: grid;
+  position: relative;
   grid-template-rows: min-content;
   gap: 10px;
   font-family: "Helvetica Neue", Arial,sans-serif;
@@ -39,7 +38,7 @@ header {
   position: absolute;
   right: 0;
   top: 20px;
-  border: 1px solid var(--link-main-color);
+  border: 1px solid var(--table-border-color);
   color: var(--link-main-color);
   padding: 5px;
   border-radius: 5px;
@@ -52,17 +51,20 @@ header {
   margin: 0;
 }
 
-h1, h2, h3 {
+h1 {
   font-family: "Helvetica Neue", Arial, sans-serif;
   font-weight: 200;
   line-height: 1.1;
 }
 
+h1 {
+  font-size: 1.6em;
+  padding: 10px 0;
+}
+
 main {
-  padding: 10px;
-  border: 1px solid var(--main-border-color);
-  border-radius: 5px;
-  height: min-content;
+  display: grid;
+  height: fit-content;
 }
 
 #target img {
@@ -110,14 +112,6 @@ a:hover {
   text-decoration: underline;
 }
 
-table {
-  width: 100%;
-  border: 1px solid var(--table-border-color);
-  border-collapse: collapse;
-  border-left: none;
-  border-right: none;
-}
-
 img.external-link {
   height: 1em;
   padding-left: 5px;
@@ -126,9 +120,22 @@ img.external-link {
   content: url('/static/images/local-link-icon.png');
 }
 
+th {
+  font-weight: 500;
+}
+
 th, td {
   text-align: left;
   padding: 10px;
+}
+
+table {
+  width: 100%;
+  border: 1px solid var(--table-border-color);
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-bottom: 30px;
+  border-radius: 5px;
 }
 
 table a {
@@ -152,4 +159,28 @@ td img {
   max-width: 200px;
   max-height: 200px;
   display: block;
+}
+
+td {
+  color: black;
+}
+
+footer {
+  position: absolute;
+  width: 100%;
+  bottom: 10px;
+  border: 1px solid var(--table-border-color);
+  color: var(--link-main-color);
+  padding: 5px;
+  border-radius: 5px;
+  height: 55px;
+  line-height: 1.3;
+}
+
+footer a {
+  text-decoration: underline;
+}
+
+b {
+  font-weight: bold;
 }
