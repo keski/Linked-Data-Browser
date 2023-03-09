@@ -1,10 +1,9 @@
 export const config = {
-    "server": {
-        "host": "localhost",
-        "port": 3000
-    },
-    "app": {
-        "sparql_endpoints": [
-            "http://localhost:3030/vacceval"
-    ]}
+    "host": "localhost",
+    "port": 3000,
+    "cache_ttl": 5000,
+    "sparql_endpoints": [
+        "http://localhost:3030/vacceval",
+        "https://dbpedia.org/sparql"
+    ]
 }
