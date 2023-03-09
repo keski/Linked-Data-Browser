@@ -13,15 +13,20 @@ app.use('/static', express.static('public'));
 app.set('view engine', 'hbs');
 
 app.get('/page/:id', (req, res) => {
+    const start = Date.now();
     const resource = req.params.id;
     const cached_data = cache.get(resource);
     if(cached_data === undefined){
         visit(resource).then(data => {
             cache.set(resource, data);
-            res.render("resource", data);
+            const delay = Date.now() - start;
+            const render_start = Date.now();
+            res.render("resource", {...data, ...{delay, render_start}});
         });
     } else {
-        res.render("resource", cached_data);
+        const delay = Date.now() - start;
+        const render_start = Date.now();
+        res.render("resource", {...cached_data, ...{delay, render_start}});
     }
 });
 

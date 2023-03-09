@@ -48,8 +48,6 @@ function getImage(value) {
 /* Handlebar helpers */
 hbs.registerHelper('or', (v1, v2) => Object.keys(v1).length !== 0 || Object.keys(v2).length !== 0);
 
-hbs.registerHelper('not', (bool) => !bool);
-
 hbs.registerHelper('get', (object, index) => object[index]);
 
 hbs.registerHelper('format', (table, value) => {
@@ -78,6 +76,28 @@ hbs.registerHelper('setVar', (varName, varValue, options) => {
     options.data.root[varName] = varValue;
 });
 
+hbs.registerHelper('get_delay', (t) => Date.now() - t);
+
+hbs.registerHelper('sort', (value, options) => {
+    const compareFn = (a, b) => {
+        a = prefix(a).toUpperCase();
+        b = prefix(b).toUpperCase();
+        if (a < b) {
+            return -1;
+        }
+        if (a > b) {
+            return 1;
+        }
+        return 0;
+    }
+
+    if(Array.isArray(value)){
+        return value.sort(compareFn);
+    } else {
+        return Object.keys(value).sort(compareFn);
+    }
+});
+
 function pushIfNotExists(array, item) {
     if (!array.includes(item)) {
         array.push(item);
@@ -88,9 +108,7 @@ async function visit(url, format = 'html') {
     // define query engine
     const engine = new QueryEngine();
     const sources = [];
-    for (const sparql_endpoint of sparql_endpoints) {
-        sources.push({ type: "sparql", value: sparql_endpoint });
-    }
+    sparql_endpoints.forEach(value => sources.push({ type: 'sparql', value }));
 
     if (format == 'html') {
         const table = {};
@@ -99,13 +117,13 @@ async function visit(url, format = 'html') {
         const object = {};
 
         // consume results as a stream (best performance)
-        let query = CONSTRUCT_QUERY.replaceAll('{resource}', `${url}`);
+        const query = CONSTRUCT_QUERY.replaceAll('{resource}', `${url}`);
         const bindingsStream = await engine.queryQuads(query, { sources });
         bindingsStream.on('data', (quad) => {
             // get term values
-            let s = quad.subject.value;
-            let p = quad.predicate.value;
-            let o = quad.object.value;
+            const s = quad.subject.value;
+            const p = quad.predicate.value;
+            const o = quad.object.value;
 
             // add to terms to lookup table
             table[s] = quad.subject;
@@ -134,7 +152,6 @@ async function visit(url, format = 'html') {
                 resolve({ url, table, subject, property, object }));
         });
     }
-
 }
 
 export { hbs, visit };

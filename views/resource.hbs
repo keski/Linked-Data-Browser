@@ -6,20 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
+
 <body>
+    <header>
+        <h1 class="logo">
+            <img src="/static/images/logo-color.png">
+            <a href="/page">Linked Data Browser</a>
+        </h1>
+        <div class="time">
+            <p>Data loaded in {{delay}} ms</p>
+            <p>Page rendered in {{get_delay render_start}} ms</p>
+        </div>
+    </header>
+
     <main>
-        <header>
-            <h1 class="logo">
-                <img src="/static/images/logo-color.png">
-                <a href="/page">Linked Data Browser</a>
-            </h1>
-        </header>
         <h1 id="target">{{{ format @root.table url }}}</h1>
 
-        {{#if (not (or subject (or object property))) }}
+        {{#unless (or subject (or object property)) }}
         <div class="error-404">404</div>
-        {{/if}}
-        
+        {{/unless}}
+
         {{#if (or subject object)}}
         <table>
             <tr>
@@ -27,12 +33,10 @@
                 <th>Value</th>
             </tr>
 
-            <!-- 404 -->
-
             <!-- resource is subject -->
-            {{#each subject}}
-                {{setVar "property" @key}}
-                {{#each this}}
+            {{#each (sort subject)}}
+                {{setVar "property" this}}
+                {{#each (sort (get @root.subject this))}}
                     <tr>
                         {{#if @root.property}}
                             <td>{{{ format @root.table @root.property }}}</td>
@@ -45,10 +49,12 @@
                 {{/each}}
             {{/each}}
 
+
+
             <!-- resource is object -->
-            {{#each object}}
-                {{setVar "property" @key}}
-                {{#each this}}
+            {{#each (sort object)}}
+                {{setVar "property" this}}
+                {{#each (sort (get @root.object this))}}
                     <tr>
                         {{#if @root.property}}
                             <td>is {{{ format @root.table @root.property }}} of</td>
@@ -72,10 +78,10 @@
 
             <!-- resource is subject -->
             {{#each property}}
-                <tr>
-                    <td>{{{ format @root.table (get this 0) }}}</td>
-                    <td>{{{ format @root.table (get this 1) }}}</td>
-                </tr>
+            <tr>
+                <td>{{{ format @root.table (get this 0) }}}</td>
+                <td>{{{ format @root.table (get this 1) }}}</td>
+            </tr>
             {{/each}}
         </table>
         {{/if}}
