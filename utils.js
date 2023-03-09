@@ -3,7 +3,7 @@ import { QueryEngine } from '@comunica/query-sparql';
 import { CONSTRUCT_QUERY } from './resources/queries.js';
 import hbs from 'hbs';
 
-const sparql_endpoints = config['app']['sparql_endpoints'] || ['https://dbpedia.org/sparql'];
+const sparql_endpoints = config.sparql_endpoints || ['https://dbpedia.org/sparql'];
 
 let prefixMapping = {
     'http://w3id.org/': 'data',
